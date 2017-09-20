@@ -28,6 +28,8 @@ local encrypt_methods = {
 
 m = Map(shadowsocks, "%s - %s" %{translate("ShadowSocks"), translate("Edit Server")})
 m.redirect = luci.dispatcher.build_url("admin/services/shadowsocks/servers")
+m.sid = sid
+m.template = "shadowsocks/servers-details"
 
 if m.uci:get(shadowsocks, sid) ~= "servers" then
 	luci.http.redirect(m.redirect)
@@ -43,6 +45,9 @@ o = s:option(Value, "alias", translate("Alias(optional)"))
 o.rmempty = true
 
 o = s:option(Flag, "fast_open", translate("TCP Fast Open"))
+o.rmempty = false
+
+o = s:option(Flag, "no_delay", translate("TCP no-delay"))
 o.rmempty = false
 
 o = s:option(Value, "server", translate("Server Address"))
